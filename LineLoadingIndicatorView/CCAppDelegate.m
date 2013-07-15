@@ -6,7 +6,12 @@
 //  Copyright (c) 2013 Cat Cyborg. All rights reserved.
 //
 
+#import "CCLineLoadingIndicatorView.h"
 #import "CCAppDelegate.h"
+
+@interface CCAppDelegate ()
+@property (nonatomic, weak) CCLineLoadingIndicatorView *loadingIndicatorView;
+@end
 
 @implementation CCAppDelegate
 
@@ -15,8 +20,24 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
+
+    CCLineLoadingIndicatorView *loadingIndicatorView = [[CCLineLoadingIndicatorView alloc] initWithFrame:CGRectMake(0, 30, self.window.frame.size.width, 2)];
+    [self.window addSubview:loadingIndicatorView];
+    [loadingIndicatorView animateOnceWithDuration:0.8];
+    self.loadingIndicatorView = loadingIndicatorView;
+
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [button setTitle:@"Animate" forState:UIControlStateNormal];
+    [button sizeToFit];
+    button.frame = CGRectMake(0, 160, self.window.frame.size.width, 64);
+    [button addTarget:self action:@selector(didTapButton) forControlEvents:UIControlEventTouchUpInside];
+    [self.window addSubview:button];
     [self.window makeKeyAndVisible];
     return YES;
+}
+
+- (void)didTapButton {
+    [self.loadingIndicatorView animateOnceWithDuration:1];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
